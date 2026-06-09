@@ -1,19 +1,20 @@
 {
-  "name": "Trixie UP",
-  "image": "mcr.microsoft.com/devcontainers/base:trixie",
-  "features": {
-    "ghcr.io/devcontainers/features/sshd:1": {
-      "version": "latest"
-    }
+  "name": "Ubuntu Systemd VM",
+  "build": {
+    "dockerfile": "Dockerfile"
   },
   "runArgs": [
-    "--cap-add=SYS_ADMIN",
+    "--privileged",
+    "--init",
     "--device=/dev/fuse",
-    "--security-opt=seccomp=unconfined",
-    "--security-opt=apparmor=unconfined",
-    "--security-opt=label=disable",
     "--shm-size=8gb"
   ],
+  "mounts": [
+    "source=/sys/fs/cgroup,target=/sys/fs/cgroup,type=bind"
+  ],
+  "overrideCommand": false,
+  "remoteUser": "root",
+  "postCreateCommand": "systemctl start ssh",
   "customizations": {
     "vscode": {
       "extensions": []
